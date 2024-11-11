@@ -3,6 +3,8 @@
  * CS 16000-01 02/03, Fall Semester 2024
  * Lab 7
  * 
+ * This class contains the main() method, which will
+ * simply run the ESP game.
  */
 
 package colors;

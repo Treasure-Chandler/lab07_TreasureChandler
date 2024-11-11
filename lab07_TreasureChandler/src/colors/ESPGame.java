@@ -3,6 +3,12 @@
  * CS 16000-01 02/03, Fall Semester 2024
  * Lab 7
  * 
+ * This class contains all of the functionality for the ESP
+ * game, which includes choosing a random color, opening a
+ * window which displays said random color, letting the user
+ * guess the color in a dropdown menu, displaying if the user
+ * guessed correctly or incorrectly, and displaying the score
+ * the user ends up with at the end of the game.
  */
 
 package colors;
@@ -96,12 +102,13 @@ public class ESPGame {
     public void showColor(Color color) {
         JFrame frame = new JFrame("Guess this color!");
         frame.setSize(400,350);
-        frame.setLocation(200,203);
+        frame.setLocation(100,203);
 
         JPanel panel = new JPanel();
         panel.setBackground(color);
         frame.add(panel);
         frame.setVisible(true);
+        frame.setAlwaysOnTop(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     } // End of showColor()
 
@@ -109,6 +116,11 @@ public class ESPGame {
      * Runs a while loop to repeadedly offer the ESP game to the
      * user
      */
+    /*
+     * This line is to suppress warnings for "unused" variables that are
+     * actually "used"
+     */
+    @SuppressWarnings("unused")
     public void guessColor() {
         // Variables declaration
         String title, message, user_Input;
@@ -116,11 +128,18 @@ public class ESPGame {
             correctTries = 0, incorrectTries = 0;
         double triesPercentage = 0.0;
         Random rand = new Random();
+        /*
+         * due to the JOptionPane dialogue boxes sometimes appearing behind
+         * all of your windows, you will need to declare a JDialog and
+         * setAlwaysOnTop to true
+         */
+        final JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
 
         // Figure 1:
         title = "ESP Game";
         message = "Enter the ESP Game?";
-        yesNo = JOptionPane.showConfirmDialog(null, message, title,
+        yesNo = JOptionPane.showConfirmDialog(dialog, message, title,
                                                 JOptionPane.YES_NO_OPTION);
         
         while (true) {
@@ -134,12 +153,10 @@ public class ESPGame {
                 
                 title = "Your ESP Test Result:";
                 message = "No game was played.";
-                JOptionPane.showMessageDialog(null, message, title,
+                JOptionPane.showMessageDialog(dialog, message, title,
                                                 JOptionPane.INFORMATION_MESSAGE);
 
                 System.exit(0);
-
-                break;
             } else {
                 /*
                  * Increments the amount of total tries (which will be the number
@@ -172,7 +189,7 @@ public class ESPGame {
                                         "dark gray", "gray", "green", "light gray",
                                         "magenta", "orange", "pink", "red", "white",
                                         "yellow"};
-                user_Input = (String) JOptionPane.showInputDialog(null, message, title,
+                user_Input = (String) JOptionPane.showInputDialog(dialog, message, title,
                                                                     JOptionPane.QUESTION_MESSAGE,
                                                                     null, colorArray, colorArray[11]);
 
@@ -185,14 +202,14 @@ public class ESPGame {
                     // Figure 4:
                     title = "Your guess is...";
                     message = "You guessed correctly!";
-                    JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.INFORMATION_MESSAGE);
                     // Increments the amount of correct guesses
                     correctTries++;
                 } else {
                     // Figure 5:
                     title = "Your guess is...";
                     message = "You guessed incorrectly...";
-                    JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.WARNING_MESSAGE);
                     // Increments the amount of incorrect guesses
                     incorrectTries++;
                 }
@@ -206,14 +223,21 @@ public class ESPGame {
                  */
                 if (totalTries == 10) {
                     /*
-                     * Display the results in the console, and in a seperate JOptionPane
-                     * window
+                     * Display the results in the console, along with displaying in a seperate
+                     * JOptionPane window
                      */
                     System.out.printf("Out of %d game(s), you have guessed %d correctly." +
                                         "\nThe percentage for your correct guesses is %.2f%%.",
                                         totalTries, correctTries, triesPercentage);
 
-                    break;
+                    title = "Your ESP Test Result:";
+                    message = String.format("Out of %d game(s), you have guessed %d correctly." +
+                                            "\nThe percentage for your correct guesses is %.2f%%.",
+                                            totalTries, correctTries, triesPercentage);
+                    JOptionPane.showMessageDialog(dialog, message, title,
+                                                    JOptionPane.INFORMATION_MESSAGE);
+
+                    System.exit(0);
                 }
             }
         } // End of while loop
