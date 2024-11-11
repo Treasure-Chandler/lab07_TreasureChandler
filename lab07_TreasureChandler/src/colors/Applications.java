@@ -13,6 +13,7 @@ public class Applications {
      * @param args      Entered values
      */
     public static void main(String[] args) {
-        
+        ESPGame game = new ESPGame();
+        game.guessColor();
     } // End of main()
 } // End of Applications

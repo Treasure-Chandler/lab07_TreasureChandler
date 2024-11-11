@@ -7,8 +7,11 @@
 
 package colors;
 
-import java.awt.Color;  // Needed for the color class
-import javax.swing.*;   // NEeded for the JOptionPane class
+import java.awt.Color;      // Needed for the color class
+import java.util.Arrays;
+import java.util.Random;    // Needed for the Random class
+import javax.swing.*;       // NEeded for the JOptionPane class
+
 
 public class ESPGame {
     // Variables declaration
@@ -75,6 +78,10 @@ public class ESPGame {
                 color = Color.lightGray;
                 chosenColor = "light gray";
                 break;
+            case 13:
+                color = Color.BLACK;
+                chosenColor = "black";
+                break;
             default:
                 color = Color.BLACK;
                 chosenColor = "black";
@@ -89,8 +96,8 @@ public class ESPGame {
      */
     public void showColor(Color color) {
         JFrame frame = new JFrame("Guess this color!");
-        frame.setSize(200,200);
-        frame.setLocation(300,300);
+        frame.setSize(400,350);
+        frame.setLocation(200,203);
 
         JPanel panel = new JPanel();
         panel.setBackground(color);
@@ -104,17 +111,80 @@ public class ESPGame {
      * user
      */
     public void guessColor() {
-        String title, message;
-        int yesNo = 0;
+        // Variables declaration
+        String title, message, user_Input;
+        int yesNo = 0, randomColor;
+        Random rand = new Random();
 
         // Figure 1:
         title = "ESP Game";
         message = "Enter the ESP Game?";
-        JOptionPane.showConfirmDialog(null, message, title,
-                                        JOptionPane.YES_NO_OPTION);
+        yesNo = JOptionPane.showConfirmDialog(null, message, title,
+                                                JOptionPane.YES_NO_OPTION);
         
-        while (yesNo == JOptionPane.YES_OPTION) {
+        while (true) {
+            if (yesNo == JOptionPane.NO_OPTION) {
+                /*
+                 * If the user answers "No", the program will end with a new
+                 * dialog window and a console message notifying the player
+                 * of such
+                 */
+                System.out.println("No game was played.");
+                
+                title = "Your ESP Test Result:";
+                message = "No game was played.";
+                JOptionPane.showMessageDialog(null, message, title,
+                                                JOptionPane.INFORMATION_MESSAGE);
 
-        }
+                System.exit(0);
+
+                break;
+            } else {
+                /*
+                 * If the user clicks "Yes", the method will randomly select
+                 * an integer between 1 and 13, calls chooseColor() with the
+                 * random number as a parameter, then calls showColor() with
+                 * the color value returned by chooseColor() as a parameter
+                 */
+                randomColor = rand.nextInt(13) + 1;
+
+                /*
+                 * The "chosenColor" variable is initialized to chooseColor()
+                 * in order to keep track of the chosen color later on. It also
+                 * gives showColor() a parameter to be called with
+                 */
+                Color chosenColor = chooseColor(randomColor);
+
+                showColor(chosenColor);
+
+                // Figure 3b:
+                title = "Choose any color name here:";
+                message = "\nbrown\nred\ngreen\nblue\nmagenta\ncyan\nblack"
+                            + "\norange\nyellow\nbeige\nlight gray\ngray"
+                            + "\ndark gray\npink\nwhite";
+                String[] colorArray = {"beige", "black", "blue", "brown", "cyan",
+                                        "dark gray", "gray", "green", "light gray",
+                                        "magenta", "orange", "pink", "red", "white",
+                                        "yellow"};
+                user_Input = (String) JOptionPane.showInputDialog(null, message, title,
+                                                                    JOptionPane.QUESTION_MESSAGE,
+                                                                    null, colorArray, colorArray[11]);
+
+                /*
+                 * After the user enters a choice, the method compares the selection
+                 * from the window with the value of "chosenColor", and notifies the user
+                 * upon if they guessed correctly or incorrectly
+                 */
+                if (Arrays.asList(colorArray).contains(user_Input)) {
+                    title = "Your guess is...";
+                    message = "You guessed correctly!";
+                    JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    title = "Your guess is...";
+                    message = "You guessed incorrectly...";
+                    JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        } // End of while loop
     } // End of guessColor()
 } // End of ESPGame
