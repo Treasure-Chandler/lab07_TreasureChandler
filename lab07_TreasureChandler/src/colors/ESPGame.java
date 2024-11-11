@@ -204,7 +204,7 @@ public class ESPGame {
                  * Since this game will go on forever due to the loop, I have added a limit to how
                  * many games can be played. I added a game limit of 10, for reference.
                  */
-                if (totalTries = 10) {
+                if (totalTries == 10) {
                     /*
                      * Display the results in the console, and in a seperate JOptionPane
                      * window
