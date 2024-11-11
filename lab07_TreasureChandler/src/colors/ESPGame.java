@@ -8,7 +8,6 @@
 package colors;
 
 import java.awt.Color;      // Needed for the color class
-import java.util.Arrays;
 import java.util.Random;    // Needed for the Random class
 import javax.swing.*;       // NEeded for the JOptionPane class
 
@@ -113,7 +112,9 @@ public class ESPGame {
     public void guessColor() {
         // Variables declaration
         String title, message, user_Input;
-        int yesNo = 0, randomColor;
+        int randomColor, yesNo = 0, totalTries = 0,
+            correctTries = 0, incorrectTries = 0;
+        double triesPercentage = 0.0;
         Random rand = new Random();
 
         // Figure 1:
@@ -141,6 +142,11 @@ public class ESPGame {
                 break;
             } else {
                 /*
+                 * Increments the amount of total tries (which will be the number
+                 * of correct and incorrect tries total)
+                 */
+                totalTries++;
+                /*
                  * If the user clicks "Yes", the method will randomly select
                  * an integer between 1 and 13, calls chooseColor() with the
                  * random number as a parameter, then calls showColor() with
@@ -149,13 +155,13 @@ public class ESPGame {
                 randomColor = rand.nextInt(13) + 1;
 
                 /*
-                 * The "chosenColor" variable is initialized to chooseColor()
+                 * The "internalChosenColor" variable is initialized to chooseColor()
                  * in order to keep track of the chosen color later on. It also
                  * gives showColor() a parameter to be called with
                  */
-                Color chosenColor = chooseColor(randomColor);
+                Color internalChosenColor = chooseColor(randomColor);
 
-                showColor(chosenColor);
+                showColor(internalChosenColor);
 
                 // Figure 3b:
                 title = "Choose any color name here:";
@@ -173,16 +179,41 @@ public class ESPGame {
                 /*
                  * After the user enters a choice, the method compares the selection
                  * from the window with the value of "chosenColor", and notifies the user
-                 * upon if they guessed correctly or incorrectly
+                 * upon if they guessed correctly or incorrectly. 
                  */
-                if (Arrays.asList(colorArray).contains(user_Input)) {
+                if (user_Input.equals(chosenColor)) {
+                    // Figure 4:
                     title = "Your guess is...";
                     message = "You guessed correctly!";
                     JOptionPane.showMessageDialog(null, message, title, JOptionPane.INFORMATION_MESSAGE);
+                    // Increments the amount of correct guesses
+                    correctTries++;
                 } else {
+                    // Figure 5:
                     title = "Your guess is...";
                     message = "You guessed incorrectly...";
                     JOptionPane.showMessageDialog(null, message, title, JOptionPane.WARNING_MESSAGE);
+                    // Increments the amount of incorrect guesses
+                    incorrectTries++;
+                }
+
+                // Compute the percentage of the correct games
+                triesPercentage = (correctTries / totalTries) * 100;
+
+                /*
+                 * Since this game will go on forever due to the loop, I have added a limit to how
+                 * many games can be played. I added a game limit of 10, for reference.
+                 */
+                if (totalTries = 10) {
+                    /*
+                     * Display the results in the console, and in a seperate JOptionPane
+                     * window
+                     */
+                    System.out.printf("Out of %d game(s), you have guessed %d correctly." +
+                                        "\nThe percentage for your correct guesses is %.2f%%.",
+                                        totalTries, correctTries, triesPercentage);
+
+                    break;
                 }
             }
         } // End of while loop
