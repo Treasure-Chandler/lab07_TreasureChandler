@@ -124,9 +124,9 @@ public class ESPGame {
     public void guessColor() {
         // Variables declaration
         String title, message, user_Input;
-        int randomColor, yesNo = 0, totalTries = 0,
-            correctTries = 0, incorrectTries = 0;
-        double triesPercentage = 0.0;
+        int randomColor, yesNo = 0, totalTries = 0;
+        double correctTries = 0.0, incorrectTries = 0.0, 
+                triesPercentage = 0.0;
         Random rand = new Random();
         /*
          * due to the JOptionPane dialogue boxes sometimes appearing behind
@@ -219,19 +219,19 @@ public class ESPGame {
 
                 /*
                  * Since this game will go on forever due to the loop, I have added a limit to how
-                 * many games can be played. I added a game limit of 10, for reference.
+                 * many games can be played. I added a game limit of 15, for reference.
                  */
-                if (totalTries == 10) {
+                if (totalTries == 15) {
                     /*
                      * Display the results in the console, along with displaying in a seperate
                      * JOptionPane window
                      */
-                    System.out.printf("Out of %d game(s), you have guessed %d correctly." +
+                    System.out.printf("Out of %d game(s), you have guessed %.0f correctly." +
                                         "\nThe percentage for your correct guesses is %.2f%%.",
                                         totalTries, correctTries, triesPercentage);
 
                     title = "Your ESP Test Result:";
-                    message = String.format("Out of %d game(s), you have guessed %d correctly." +
+                    message = String.format("Out of %d game(s), you have guessed %.0f correctly." +
                                             "\nThe percentage for your correct guesses is %.2f%%.",
                                             totalTries, correctTries, triesPercentage);
                     JOptionPane.showMessageDialog(dialog, message, title,
