@@ -114,22 +114,16 @@ public class ESPGame {
 
     /**
      * Runs a while loop to repeadedly offer the ESP game to the
-     * user
+     * user; this is technically the actual game
      */
-    /*
-     * This line is to suppress warnings for "unused" variables that are
-     * actually "used"
-     */
-    @SuppressWarnings("unused")
     public void guessColor() {
         // Variables declaration
         String title, message, user_Input;
         int randomColor, yesNo = 0, totalTries = 0;
-        double correctTries = 0.0, incorrectTries = 0.0, 
-                triesPercentage = 0.0;
+        double correctTries = 0.0;
         Random rand = new Random();
         /*
-         * due to the JOptionPane dialogue boxes sometimes appearing behind
+         * Due to the JOptionPane dialogue boxes sometimes appearing behind
          * all of your windows, you will need to declare a JDialog and
          * setAlwaysOnTop to true
          */
@@ -206,50 +200,57 @@ public class ESPGame {
                     // Increments the amount of correct guesses
                     correctTries++;
 
-                    // Compute the percentage of the correct games
-                    triesPercentage = (correctTries / totalTries) * 100;
-
-                    /*
-                     * Display the results in the console, along with displaying in a seperate
-                     * JOptionPane window
-                     */
-                    System.out.printf("Out of %d game(s), you have guessed %.0f correctly." +
-                                        "\nThe percentage for your correct guesses is %.2f%%.\n",
-                                        totalTries, correctTries, triesPercentage);
-
-                    title = "Your ESP Test Result:";
-                    message = String.format("Out of %d game(s), you have guessed %.0f correctly." +
-                                            "\nThe percentage for your correct guesses is %.2f%%.",
-                                            totalTries, correctTries, triesPercentage);
-                    JOptionPane.showMessageDialog(dialog, message, title,
-                                                    JOptionPane.INFORMATION_MESSAGE);
+                    // Calls displayResult() to notify the user of their progress
+                    displayResult(totalTries, correctTries);
                 } else {
                     // Figure 5:
                     title = "Your guess is...";
                     message = "You guessed incorrectly...";
                     JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.WARNING_MESSAGE);
-                    // Increments the amount of incorrect guesses
-                    incorrectTries++;
-
-                    // Compute the percentage of the correct games
-                    triesPercentage = (correctTries / totalTries) * 100;
-
-                    /*
-                     * Display the results in the console, along with displaying in a seperate
-                     * JOptionPane window
-                     */
-                    System.out.printf("Out of %d game(s), you have guessed %.0f correctly." +
-                                        "\nThe percentage for your correct guesses is %.2f%%.\n",
-                                        totalTries, correctTries, triesPercentage);
-
-                    title = "Your ESP Test Result:";
-                    message = String.format("Out of %d game(s), you have guessed %.0f correctly." +
-                                            "\nThe percentage for your correct guesses is %.2f%%.",
-                                            totalTries, correctTries, triesPercentage);
-                    JOptionPane.showMessageDialog(dialog, message, title,
-                                                    JOptionPane.INFORMATION_MESSAGE);
+                
+                    // Calls displayResult() to notify the user of their progress
+                    displayResult(totalTries, correctTries);
                 }
             }
         } // End of while loop
     } // End of guessColor()
+
+    /**
+     * Displays the user of their progress in the console and in a JOptionPane
+     * window
+     * @param tries
+     * @param rightTries
+     */
+    public void displayResult(int tries, double rightTries) {
+        // Variables declaration
+        String title, message;
+        double triesPercentage = 0.0;
+        /*
+         * Due to the JOptionPane dialogue boxes sometimes appearing behind
+         * all of your windows, you will need to declare a JDialog and
+         * setAlwaysOnTop to true
+         */
+        final JDialog dialog = new JDialog();
+        dialog.setAlwaysOnTop(true);
+
+        // Compute the percentage of the correct games
+        triesPercentage = (rightTries / tries) * 100;
+
+        if (tries > 0) {
+        /*
+         * If the total games are greater than 0, display the results in the
+         * console, along with displaying in a seperate JOptionPane window
+         */
+        System.out.printf("Out of %d game(s), you have guessed %.0f correctly." +
+                            "\nThe percentage for your correct guesses is %.2f%%.\n\n",
+                            tries, rightTries, triesPercentage);
+
+        title = "Your ESP Test Result:";
+        message = String.format("Out of %d game(s), you have guessed %.0f correctly." +
+                                "\nThe percentage for your correct guesses is %.2f%%.",
+                                tries, rightTries, triesPercentage);
+        JOptionPane.showMessageDialog(dialog, message, title,
+                                        JOptionPane.INFORMATION_MESSAGE);
+        }
+    } // End of displayResult()
 } // End of ESPGame

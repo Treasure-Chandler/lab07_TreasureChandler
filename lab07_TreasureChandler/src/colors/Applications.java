@@ -15,7 +15,10 @@ public class Applications {
      * @param args      Entered values
      */
     public static void main(String[] args) {
+        // Instatiates an ESPGame object
         ESPGame game = new ESPGame();
+
+        // Plays the actual game
         game.guessColor();
     } // End of main()
 } // End of Applications
