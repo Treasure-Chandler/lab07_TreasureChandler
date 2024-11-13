@@ -90,7 +90,7 @@ public class ESPGame {
             default:
                 color = Color.BLACK;
                 chosenColor = "black";
-        }
+        } // End of switch (input)
         return color;
     } // End of chooseColor()
 
@@ -129,14 +129,14 @@ public class ESPGame {
          */
         final JDialog dialog = new JDialog();
         dialog.setAlwaysOnTop(true);
-
-        // Figure 1:
-        title = "ESP Game";
-        message = "Enter the ESP Game?";
-        yesNo = JOptionPane.showConfirmDialog(dialog, message, title,
-                                                JOptionPane.YES_NO_OPTION);
         
         while (true) {
+            // Figure 1:
+            title = "ESP Game";
+            message = "Play the ESP Game?";
+            yesNo = JOptionPane.showConfirmDialog(dialog, message, title,
+                                                    JOptionPane.YES_NO_OPTION);
+
             if (yesNo == JOptionPane.NO_OPTION) {
                 /*
                  * If the user answers "No", the program will end with a new
@@ -145,11 +145,21 @@ public class ESPGame {
                  */
                 System.out.println("No game was played.");
                 
-                title = "Your ESP Test Result:";
-                message = "No game was played.";
+                title = "Your ESP Test Results:";
+                if (totalTries == 0) {
+                    message = "No game was played.";
+                } else {
+                    message = "End of playing session! Let's see the results.";
+                }
                 JOptionPane.showMessageDialog(dialog, message, title,
                                                 JOptionPane.INFORMATION_MESSAGE);
 
+                /*
+                 * Calls displayResult() to notify the user of their progress
+                 * once they are completely done playing
+                 */
+                displayResult(totalTries, correctTries);
+                
                 System.exit(0);
             } else {
                 /*
@@ -199,17 +209,11 @@ public class ESPGame {
                     JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.INFORMATION_MESSAGE);
                     // Increments the amount of correct guesses
                     correctTries++;
-
-                    // Calls displayResult() to notify the user of their progress
-                    displayResult(totalTries, correctTries);
                 } else {
                     // Figure 5:
                     title = "Your guess is...";
                     message = "You guessed incorrectly...";
                     JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.WARNING_MESSAGE);
-                
-                    // Calls displayResult() to notify the user of their progress
-                    displayResult(totalTries, correctTries);
                 }
             }
         } // End of while loop
